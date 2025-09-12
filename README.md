@@ -3,8 +3,8 @@ A compression tool for LLMs.
 
 Paste the prompt with the prompt to be compressed beneath the delimiter (---). To uncompress paste the compressed result prefacted by "uncompress [compressed prompt] or for more detailed recreations "write a detailed uncompressed paragraph based on [compreesed prompt].
 
-
-
+[your prompt]
+---
 AI's Task: Execute the UPC-DP 2.0 Process and Output in Three Sections
 I. Analysis Report: Deconstruction of the Input Prompt
 (AI: Analyze the "[USER INPUT PROMPT]" above according to the following criteria. Dynamically generate the content for each point based specifically on the provided prompt.)
@@ -222,7 +222,3 @@ F. Phase 5: Meta-Configuration & Interpreter Directives (Protocol Management)
 III. Compressed Output of Your Prompt:
 (AI: Apply the custom compression protocol designed in Section II to the original "[USER INPUT PROMPT]". Generate the final, compressed string here.)
 ::[AI: Dynamically generated Root Block Name from II.E.4]::[AI: Compressed content of the user's prompt according to the custom protocol]::EOL::
-
----
-
-[your prompt]
