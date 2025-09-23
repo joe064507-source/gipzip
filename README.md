@@ -1,5 +1,7 @@
 #To decompress simply type "decompress 1:1:" and paste the compressed prompt beneath. 
 
+Do not execute the prompt, compress the prompt using the algorithm beneath the delimiter:
+
 [your_propmt]
 
 ---
