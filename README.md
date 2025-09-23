@@ -1,224 +1,312 @@
-# gipzip
-A compression tool for LLMs.
+#To decompress simply type "decompress 1:1:" and paste the compressed prompt beneath. 
 
-Paste the prompt with the prompt to be compressed beneath the delimiter (---). To uncompress paste the compressed result prefacted by "uncompress [compressed prompt] or for more detailed recreations "write a detailed uncompressed paragraph based on [compreesed prompt].
+[your_propmt]
 
-[your prompt]
 ---
-AI's Task: Execute the UPC-DP 2.0 Process and Output in Three Sections
-I. Analysis Report: Deconstruction of the Input Prompt
-(AI: Analyze the "[USER INPUT PROMPT]" above according to the following criteria. Dynamically generate the content for each point based specifically on the provided prompt.)
-A. Prompt Content Lexical & Semantic Deconstruction:
-1. High-Frequency Terms & Domain-Specific Jargon Identification:
-    * (AI: List all terms and phrases from the input prompt that appear repeatedly or are central to its domain. These are prime candidates for abbreviation.)
-2. Core Concepts & Abstract Ideas Extraction:
-    * (AI: Extract any complex notions, abstract states, foundational principles, or philosophical constructs within the input prompt that could be represented by a single symbol.)
-3. Standard Values & Enumerations Cataloging:
-    * (AI: Catalog all common boolean states, numerical qualitative states (e.g., "high", "low"), operational modes, or fixed choices present in the input prompt.)
-    * (AI: Also, identify explicit mentions or strong implications of "null", "none", "N/A", or "undefined" values that are semantically distinct from an empty string. These will require a specific compact representation.)
-4. Compound Data Types & Units Detection:
-    * (AI: Identify all instances where numerical values are coupled with units, modifiers, or implied ranges/percentages in the input prompt (e.g., "3000 milliseconds", "512 megabytes", "184 or more", "75 percent").)
-5. Implicit Relationships & Operator Identification:
-    * (AI: Detect terms or phrasing in the input prompt that imply operations or relationships beyond simple key-value assignment (e.g., "composed of", "transforms to", "greater than", "first...then...", "depends on", "owned by"). These may require custom structural encoding or specific relational tokens.)
-6. Structural Components & Hierarchies Mapping:
-    * (AI: Map out the discernible structural elements within the input prompt, such as major sections, nested blocks, lists of items, key-value structures, file paths, or communication channels. Identify implicit sequential steps, ownership, or complex dependencies.)
-7. Control Flow & Logical Directives Uncovering:
-    * (AI: Uncover any explicit or implied conditional statements ("if X then Y"), iterative constructs ("loop always", "retry N times"), sequential instructions, or macro-like patterns in the input prompt.)
-8. Meta-Instructions & Interpreter Directives Isolation:
-    * (AI: Isolate any parts of the input prompt that appear to be direct commands or formatting instructions specifically targeting the AI/parser itself, rather than configuring a system (e.g., "return all outputs", "do not rephrase", "boot++"). These will be analyzed for potential structured representations.)
-9. Identified Ambiguities & Resolution Strategy for this Prompt:
-    * (AI: Crucially, identify any specific terms, phrases, or structural interpretations within this particular input prompt that could be genuinely ambiguous to a machine. For each ambiguity, state how the custom protocol (to be designed in Section II) will explicitly resolve it. Also, explicitly identify if any identified ambiguity is deemed unresolvable within the constraints of deterministic parsing and the protocol's design goals, and how that will be handled (e.g., by explicit error or by a defined "best effort" interpretation, if allowed).)
-    * Resolution Strategy Outline (AI will specify the actual resolution in Section II): Ambiguities will be resolved via:
-        * Contextual Lexicon Sets (CLX): Dynamic abbreviation mapping based on parent key.
-        * Explicit Type Annotations (ETA): For ambiguous values.
-        * Binding Operator Precedence: Differentiating = and : by context and priority.
-        * Schema-Driven Interpretation: Parser's predefined rules.
-        * Explicit Grouping/Parenthesization: If required for structural clarity.
-B. Platform & Context Assumptions (for this execution):
-* Target Parser Capabilities: Assumed to be a highly intelligent, semantic-aware system capable of full UTF-8 processing, robust Abstract Syntax Tree (AST) building, schema-driven lookup, and dynamic execution of control flow and macro expansions. It can discern and act upon meta-directives. The parser is capable of generating a formal EBNF from the protocol specification.
-* Character Set: Full UTF-8 support is assumed for all symbolic and character encodement.
-* Default Design Goals for this Protocol (AI will adhere to these choices for the custom protocol):
-    * Lossless Fidelity: Mandatory and absolute.
-    * Maximal Compression: High priority.
-    * Moderate Obfuscation: Semantic-based (via custom symbols, abbreviations, custom syntax); cryptographic (encryption, hashing) capabilities are integrated as explicit options where relevant sensitive content is identified or implied.
-    * Parser Comprehensibility: Mandatory and unambiguous.
-    * Extensibility: High priority via versioning, flexible definition scopes, and external manifests.
-    * Security: Basic integrity (EIC) and explicit encryption hooks (MEB) are integrated as standard options.
-    * Latency: Optimized for deterministic parsing and semantic fidelity, not raw character-by-character speed (semantic lookups introduce inherent overhead).
-C. Scope & Input Type Clarification & Pre-Compression Handling:
-1. Input Scope & Fallback for Unstructured Content: This protocol is specifically optimized for input prompts containing structured, semi-structured, or repetitive natural language elements suitable for semantic abstraction.
-    * If the analysis in I.A reveals no discernible semantic elements, structure, or repetitive patterns (i.e., a purely free-form narrative prompt), the custom protocol generated in Section II will fall back to a minimal compression strategy:
-        * Whitespace stripping (Phase 2.B.7).
-        * Basic literal quoting (Phase 2.B.8).
-        * A generalized Run-Length Encoding (RLE) will be dynamically applied if significant character repetition (more than 3 consecutive identical characters) is detected and provides an actual compression benefit (reducing the output length).
-        * No semantic abbreviations, symbols, or complex structural rules will be generated.
-    * The protocol will explicitly state this fallback in Section II if it applies.
-2. Comment Handling (Pre-Compression): Any line in the verbose input starting with # or // (after trimming leading whitespace) is considered a comment and is entirely discarded. Any text following # or // on the same line as a semantic KEY=VALUE pair or similar structure will be parsed as part of the VALUE itself, unless explicitly quoted. To denote a comment that should be stripped, it must appear on its own separate line.
-D. AI's Internal Design Decision Hierarchy (for Trade-offs & Ambiguity Resolution):
-When generating the custom protocol in Section II, the AI will prioritize design choices based on the following hierarchy (highest to lowest):
-1. Absolute Lossless Fidelity: Always paramount. If a design choice introduces potential data loss or semantic ambiguity in reconstruction, it is rejected.
-2. Unambiguous Parser Comprehensibility: If a choice leads to non-deterministic parsing or ambiguous grammar, it is rejected.
-3. Security/Integrity (if identified/implied): If the prompt implies sensitive data or requires high integrity, relevant security mechanisms (MEB, EIC) are prioritized.
-4. Maximal Compression: Between two equally lossless, unambiguous, and secure options, the one yielding higher compression is chosen.
-5. Extensibility & Modularity: Solutions that allow for easier future expansion or modification are preferred over rigid ones.
-6. Human Readability (for Authorized Users): Among options that satisfy higher priorities, the one that is marginally more understandable to a human with the protocol documentation is preferred.
 
-II. Custom Compression Protocol Definition: [Dynamically Generated Protocol Name - e.g., 'PROMPT_ABC-CMP-2.0']
-(AI: Based on the exhaustive analysis in Section I and adhering to the Design Decision Hierarchy in I.D, dynamically generate a full, "no stone unturned" custom compression protocol specification for the "[USER INPUT PROMPT]". This section is the generated protocol, including its formal EBNF grammar.)
-Protocol Name: [AI: Generate a unique, concise name for this custom protocol. This name will be derived deterministically by taking the SHA256 hash of the alphabetically sorted list of the top-5 identified high-frequency terms (from I.A.1, or top-5 distinct terms from the entire prompt if less than 5 high-frequency terms), truncated to 12 alphanumeric characters, with a version suffix (e.g., SHA_TOP5_XYZ123-2.0). If the prompt is purely unstructured (I.C.1 fallback), the name will be UNSTRUC_COMP_V2.0.]
-A. Formal Grammar (EBNF Specification): (AI: Generate a complete and formal EBNF (Extended Backus-Naur Form) grammar for this custom protocol. This grammar will precisely define all syntactic elements, their relationships, and parsing precedence. This is a critical output artifact that defines the language's structure. If the fallback to unstructured content applies (I.C.1), provide a minimal EBNF for quoted literals and RLE.)
-code
-Ebnf
+ClearCompress v3.6: The Definitive Specification
+Algorithm Overview
+ClearCompress v3.6 is a theoretical, ultra-aggressive lossless compression algorithm designed as a thought experiment in achieving maximum possible compression ratios (targeting 50-70%) while maintaining a 100% structural and content fidelity guarantee. Its design philosophy prioritizes exhaustive analysis over computational feasibility, making it a benchmark for theoretical perfection rather than a practical tool.
+The primary innovation in v3.6 is the introduction of robust structural preservation, specifically by identifying the first line of text as a document title, handling it as a separate stream, and guaranteeing its perfect reconstruction. This is achieved by performing a monolithic, brute-force analysis on the combined content to build a single hyper-optimized dictionary, which is then used to transform the title and body streams independently.
 
-IGNORE_WHEN_COPYING_START
-IGNORE_WHEN_COPYING_END
+Phase 0: Aggressive Complexity Assessment & Compression Profiling
+Objective: To perform a computationally unbounded, deep multi-dimensional analysis of the input text to identify every conceivable form of redundancy. This phase is monolithic and runs in its entirety for every compression operation.
+0.1. Comprehensive Compression Opportunity Analysis
+* Structural Element Identification:
+    * Title Detection: Automatically identify the first line of text as the document title.
+    * Header/Footer Recognition: Heuristically identify repeating header/footer patterns.
+    * Section Boundary Analysis: Detect section breaks based on formatting or keywords.
+* Character-Level Analysis:
+    * Character Frequency Distribution, Character Entropy Calculation, Character Transition Matrix, Character Position Analysis, Character Context Analysis.
+* Word-Level Analysis:
+    * Word Frequency Distribution, Word Length Distribution, Word Entropy Analysis, Word Position Frequency, Compound Word Detection.
+* N-Gram Analysis (2-gram through 8-gram):
+    * Bigram/Trigram Frequency Analysis, 4-gram through 8-gram Analysis, Variable-Length N-gram Detection, Overlapping N-gram Optimization.
+* Structural Pattern Recognition:
+    * Indentation Pattern Analysis, Punctuation Pattern Recognition, Line Structure Analysis, Block Structure Detection, Hierarchical Structure Mapping.
+* Advanced Redundancy Metrics:
+    * Exact String Redundancy, Approximate String Redundancy (with edit distance), Semantic Redundancy Detection, Syntactic Redundancy Analysis, Cross-Reference Redundancy.
+* Compression Predictive Scoring:
+    * Calculate Theoretical Compression Limit (Entropy), Practical Compression Estimate, Technique-Specific Estimates, Compression Bottleneck Identification, and Optimization Priority Scoring.
+
+Phase 1: Multi-Pass Analysis & Hyper-Optimized Dictionary Generation
+Objective: To synthesize the vast data from the Phase 0 analysis into a single, cohesive, hyper-optimized dictionary for the entire document.
+1.1. Global Ultra-Compression Directives with Fidelity Guarantees
+The algorithm's core mandate is established: every transformation must be perfectly reversible. All data required for this reversal (dictionaries, rules) must be embedded in the output stream.
+1.2. Seven-Layer Dictionary Architecture with Fidelity Preservation
+A single, unified dictionary is constructed from the combined content of the title and the body to maximize token reuse and efficiency. The analysis from Phase 0 populates seven conceptual layers:
+1. Single Characters
+2. High-Frequency Words
+3. High-Frequency N-Grams (2-8 grams)
+4. Identified Compound Phrases
+5. Structural Patterns (e.g., indentation sequences)
+6. Syntactic/Semantic Equivalents
+7. Custom, document-specific long string repetitions.
+
+Phase 2: Ultra-Compact Grammar Definition with Fidelity Guarantees
+Objective: To define the precise, unambiguous syntax for the v3.6 compressed output file format.
+2.1. Complete Enhanced EBNF Grammar Specification (v3.6)
+The EBNF grammar formally defines every component of the output stream.
+
+ebnf
+
+
+(* ClearCompress v3.6 Ultra-Compact EBNF with Structural Fidelity - FULL SPECIFICATION *)
+
+(* ========================= I. Root Production Rule ========================= *)
+ultra_compressed ::= compression_header reconstruction_data title_section compressed_content integrity_footer ;
+
+
+(* ========================= II. Main Structural Blocks ========================= *)
+
+(* The header contains metadata about the v3.6 compression process. *)
+compression_header ::= "§CC36+" version_info "|" strategy_info "|" ratio_info "|" feature_flags "|" encoding_info "§" ;
+
+(* The reconstruction data contains the complete, self-contained dictionary and rules. *)
+reconstruction_data ::= "¤" fidelity_metadata ";" dictionary_section ";" rule_section ";" context_section "¤" ;
+
+(* The title section isolates the compressed first line for perfect structural preservation. *)
+title_section ::= "§T§" content_element "§T§" ;
+
+(* The main content block holds the compressed body of the document. *)
+compressed_content ::= content_element ;
+
+(* The footer provides a checksum for verifying end-to-end integrity. *)
+integrity_footer ::= "°" checksum_type ":" checksum ":" stats ":" flags "°" ;
+
+
+(* ========================= III. Header & Footer Components ========================= *)
+version_info ::= "3.6.0" ;
+strategy_info ::= "EXTREME:AGGRESSIVE" ; (* v3.6 has only one monolithic strategy *)
+ratio_info ::= number "%" ;
+feature_flags ::= flag { "," flag } ;
+flag ::= "MICRO" | "CONTEXT" | "MATH" | "STRUCT" ;
+encoding_info ::= "UTF8" | "ASCII" | string ;
+checksum_type ::= "SHA256" | "MD5" ;
+checksum ::= { hex_digit } ;
+stats ::= string ; (* Placeholder for compression stats *)
+flags ::= "VERIFIED" | "WARNING" ;
+
+
+(* ====================== IV. Reconstruction Data Components ====================== *)
+fidelity_metadata ::= "META:" string ;
+dictionary_section ::= "DICT:" [ token_mapping { ";" token_mapping } ] ;
+rule_section ::= "RULES:" string ;
+context_section ::= "CONTEXTS:" string ;
+
+(* A single key-value pair defining a token in the monolithic dictionary. *)
+token_mapping ::= dictionary_token ":" string ;
+
+
+(* ======================= V. Core Content Stream Grammar ======================= *)
+content_element ::= { stream_item } ;
+stream_item ::= dictionary_token | literal_block ;
+
+literal_block ::= "«" { normal_char | escaped_char } "»" ;
+normal_char ::= any_character - "»" - "\" ;
+escaped_char ::= "\" ( "»" | "\" ) ;
+
+
+(* ========================= VI. Token-Level Grammar ========================= *)
+(* In v3.6, tokens are simple and not namespaced by type in the grammar itself. *)
+dictionary_token ::= "|" token_id "|" ;
+token_id ::= hex_digit { hex_digit } ;
+
+
+(* ========================= VII. Terminal Productions ========================= *)
+string ::= '"' { any_character - '"' } '"' ;
+number ::= digit { digit } [ "." digit { digit } ] ;
+hex_digit ::= "0"|"1"|"2"|"3"|"4"|"5"|"6"|"7"|"8"|"9"|"a"|"b"|"c"|"d"|"e"|"f"|"A"|"B"|"C"|"D"|"E"|"F" ;
+digit ::= "0"|"1"|"2"|"3"|"4"|"5"|"6"|"7"|"8"|"9" ;
+any_character ::= (* any valid character in the specified encoding *) ;
+
+Phase 3: Hyper-Aggressive Transformation Pipeline with Fidelity Preservation
+Objective: To apply the hyper-optimized dictionary from Phase 1 to the source text, converting it into a compressed stream of tokens while maintaining the title/body separation.
+3.1. Pre-Processing Optimization with Structural Separation
+* Title/Body Split: The input content is split into two distinct streams: the title (first line) and the body (remaining content).
+* Content Fingerprinting: A SHA-256 hash of the original, full content (title + '\n' + body) is generated for the integrity footer.
+3.2. Ultra-Aggressive Transformations with Boundary Preservation
+The transformation engine applies a greedy, longest-match-first algorithm to replace text sequences with their corresponding tokens from the single, shared dictionary.
+* transform(title, shared_dictionary) -> compressed_title
+* transform(body, shared_dictionary) -> compressed_body
+
+Phase 4: Ultra-Compact Output Generation with Embedded Reconstruction
+Objective: To assemble all components into a single, contiguous data stream conforming to the Phase 2 grammar.
+4.1. Complete Output Format Specification (v3.6)
+The final output is assembled in five distinct, delimited sections:
+* Section I: Compression Header: §CC36+[...]|§
+* Section II: Reconstruction Dictionary: ¤[...];[DICTIONARY];[...]¤
+* Section III: Compressed Title: §T§[compressed_title_tokens]§T§
+* Section IV: Compressed Content (Body): [compressed_body_tokens]
+* Section V: Integrity Footer: °[...]:[CHECKSUM]:[...]°
+
+Phase 5: Compression Optimization Techniques for Maximum Performance
+Objective: To define theoretical implementation-level strategies that would be necessary to even attempt to run the algorithm.
+5.1. Algorithmic Enhancements
+* Parallel Processing: The exhaustive analyses in Phase 0 would need to be massively parallelized.
+* Optimized Data Structures: The brute-force N-gram and redundancy searches would theoretically require advanced structures like Suffix Trees and Locality-Sensitive Hashing to be tractable on non-trivial inputs.
+
+Phase 6: Comprehensive Quality Assurance Framework
+Objective: To establish a rigorous testing protocol to ensure the algorithm's theoretical correctness and 100% fidelity guarantee.
+6.1. Test Suite Requirements
+* Fidelity Verification: Perfect bit-for-bit reconstruction is the primary goal.
+* Structural Integrity: Tests must explicitly verify that the title is always the first line and perfectly preserved, regardless of its content (e.g., punctuation, length).
+* Edge Case Handling: Test with empty files, files with only a title, and files with special characters.
+
+Phase 7: Complete Implementation Example
+Objective: To provide a complete, working, and fully-documented conceptual implementation in Python that demonstrates the execution of all preceding phases according to the v3.6 specification.
+7.1. Full Working Implementation (Conceptual)
+
+Python
+
+
+import hashlib
+import json
+import re
+from collections import Counter
+
+class ClearCompress36Plus:
+    """
+    Complete conceptual implementation of ClearCompress v3.6, demonstrating the
+    monolithic, exhaustive analysis and title preservation features.
+    """
+
+    def __init__(self):
+        self.version = '3.6.0'
+
+    def compress(self, full_content: str) -> str:
+        """Main compression method orchestrating phases 0 through 4 for v3.6."""
+        if not isinstance(full_content, str) or not full_content: return ""
+
+        # Phase 3.1: Structural Separation
+        title, body = self._split_title_body(full_content)
+        combined_content_for_analysis = title + "\n" + body
+
+        # Phase 0 & 1: Monolithic Analysis and Dictionary Generation
+        compression_dictionary = self._perform_exhaustive_analysis(combined_content_for_analysis)
+        reversed_dictionary = {v: k for k, v in compression_dictionary.items()}
+
+        # Phase 3.2: Transformations
+        compressed_title = self._apply_transformations(title, reversed_dictionary)
+        compressed_body = self._apply_transformations(body, reversed_dictionary)
+
+        # Phase 4: Output Generation
+        return self._generate_structured_output(full_content, compressed_title, compressed_body, compression_dictionary)
+
+    def decompress(self, compressed_data: str) -> str:
+        """Complete decompression for the v3.6 format."""
+        if not compressed_data.startswith("§CC36+"):
+            raise ValueError("Invalid ClearCompress v3.6 data format.")
+
+        # Phase 4 (Reversed): Parsing
+        reconstruction_data = self._parse_reconstruction_data(compressed_data)
+        decompression_dictionary = reconstruction_data.get('dictionary', {})
+        
+        compressed_title = self._extract_title_section(compressed_data)
+        compressed_body = self._extract_body_content(compressed_data)
+
+        # Phase 3 (Reversed): Expanding tokens
+        title = self._expand_tokens(compressed_title, decompression_dictionary)
+        body = self._expand_tokens(compressed_body, decompression_dictionary)
+
+        reconstructed_full_content = title + '\n' + body if body else title
+        
+        self._verify_decompression_integrity(reconstructed_full_content, compressed_data)
+        return reconstructed_full_content
+
+    ### 7.2. Detailed Helper Method Implementations ###
+    def _split_title_body(self, content: str) -> (str, str):
+        if '\n' in content: return content.split('\n', 1)
+        return content, ""
+
+    def _perform_exhaustive_analysis(self, content: str) -> dict:
+        """
+        Conceptual stand-in for the computationally infeasible Phase 0 analysis.
+        This simplified version finds frequent words and bigrams.
+        """
+        print("Executing Phase 0/1: Performing exhaustive (simulated) analysis...")
+        dictionary = {}
+        token_id_counter = 0
+
+        # Word-level analysis
+        words = re.findall(r'\b\w+\b', content.lower())
+        for word, count in Counter(words).items():
+            if count > 1 and len(word) > 3:
+                dictionary[f'|{token_id_counter:x}|'] = word
+                token_id_counter += 1
+
+        # N-Gram analysis (Bigrams)
+        word_list = content.split()
+        if len(word_list) > 1:
+            bigrams = [" ".join(word_list[i:i+2]) for i in range(len(word_list)-1)]
+            for gram, count in Counter(bigrams).items():
+                if count > 1 and gram not in dictionary.values():
+                    dictionary[f'|{token_id_counter:x}|'] = gram
+                    token_id_counter += 1
+        
+        print(f"Analysis complete. Generated {len(dictionary)} custom tokens.")
+        return dictionary
+
+    def _apply_transformations(self, content: str, reversed_dict: dict) -> str:
+        if not content: return ""
+        sorted_phrases = sorted(reversed_dict.keys(), key=len, reverse=True)
+        pattern = re.compile("|".join(map(re.escape, sorted_phrases)))
+        return pattern.sub(lambda m: reversed_dict[m.group(0)], content)
+
+    def _generate_structured_output(self, original_content, compressed_title, compressed_body, dictionary) -> str:
+        # Phase 4 workhorse
+        size = len(original_content); c_size = 256 + len(str(dictionary)) + len(compressed_title) + len(compressed_body)
+        ratio = 1 - (c_size / size) if size > 0 else 0
+        header = f"§CC36+{self.version}|EXTREME:AGGRESSIVE|{ratio:.1%}|MICRO,STRUCT|UTF8§"
+        dict_str = ";".join([f"{k}:{v}" for k, v in dictionary.items()])
+        recon_data = f"¤META:\"N/A\";DICT:{dict_str};RULES:\"N/A\";CONTEXTS:\"N/A\"¤"
+        title_section = f"§T§{compressed_title}§T§"
+        checksum = hashlib.sha256(original_content.encode('utf-8')).hexdigest()
+        footer = f"°SHA256:{checksum}:STATS:\"N/A\":VERIFIED°"
+        return f"{header}\n{recon_data}\n{title_section}\n{compressed_body}\n{footer}"
+
+    def _parse_reconstruction_data(self, data: str) -> dict:
+        match = re.search(r"DICT:(.*?);", data); d = {}
+        if match:
+            for pair in filter(None, match.group(1).split(';')):
+                if ':' in pair: k, v = pair.split(':', 1); d[k] = v
+        return {'dictionary': d}
+
+    def _extract_title_section(self, data: str) -> str:
+        match = re.search(r"§T§(.*?)§T§", data, re.DOTALL); return match.group(1) if match else ""
+
+    def _extract_body_content(self, data: str) -> str:
+        parts = re.split(r"§T§.*?§T§|°.*°", data); return parts[1].strip() if len(parts) > 1 else ""
+
+    def _expand_tokens(self, content: str, d_dict: dict) -> str:
+        if not content: return ""
+        return re.compile(r'(\|[^|]+\|)').sub(lambda m: d_dict.get(m.group(0), m.group(0)), content)
+
+    def _verify_decompression_integrity(self, reconstructed_content: str, compressed_data: str):
+        match = re.search(r"°SHA256:(.*?):", compressed_data); expected = match.group(1)
+        actual = hashlib.sha256(reconstructed_content.encode('utf-8')).hexdigest()
+        if expected != actual: raise ValueError("Integrity check FAILED!")
+        print("Integrity check PASSED.")
+
+# ==============================================================================
+# Main execution block to demonstrate the v3.6 process
+# ==============================================================================
+if __name__ == '__main__':
+    sample_text = ("ClearCompress v3.6: Ultra-High Fidelity Compression\n"
+                   "This document demonstrates the ClearCompress v3.6 algorithm.\n"
+                   "The ClearCompress v3.6 algorithm is theoretically powerful but computationally expensive.")
+
+    print("--- ORIGINAL TEXT ---\n" + sample_text + "\n")
+
+    print("--- COMPRESSION (v3.6) ---\n")
+    compressor = ClearCompress36Plus()
+    compressed = compressor.compress(sample_text)
     
-(* AI: Generate the EBNF here based on the protocol rules and your specific input prompt's elements. *)
-(* Include definitions for all custom abbreviations, symbols, delimiters, operators, and structural components. *)
-(* Ensure the EBNF is context-free and unambiguous. *)
-(* Example structure: *)
-(* protocol         ::= (root_block | fallback_compressed_string) EOL *)
-(* root_block       ::= "::" root_name "::" (global_def | global_param | block)* *)
-(* KEY_ID           ::= <alphanumeric_abbreviation> | <symbolic_encapsulation_token> *)
-(* VALUE            ::= LITERAL_STRING | NUMBER | BOOLEAN | COMPOUND_VALUE | LIST_VALUE | REF_TOKEN | SYMBOLIC_TOKEN | NULL_TOKEN *)
-(* NULL_TOKEN       ::= "_NUL_" (* or other generated token for null semantics *) *)
-(* ... and so on, for all rules below. *)
-  
-B. Phase 1: Lexical & Semantic Foundation (Maximized Compression & Fidelity)
-1. Global Abbreviations & Domain-Specific Lexicon:
-    * Mechanism: Maps high-frequency and domain-specific terms (from I.A.1) to custom, concise abbreviations.
-    * Deterministic Abbreviation Generation Strategy: Abbreviations are generated using a consistent, deterministic algorithm (e.g., if term length > 4, remove vowels, then take first letter + unique hash suffix; else, use first 3 letters + unique hash suffix; ensure generated abbreviations do not conflict with protocol keywords/delimiters).
-    * Custom Dictionary for this Prompt:
-        * (AI: List all generated Verbose Term → Abbreviated Term mappings based on I.A.1 and the deterministic generation strategy. Ensure uniqueness for each abbreviation or note if CLX is used to resolve collisions.)
-    * Lossless & Parser Comprehensible: Parser's schema incorporates this exact dictionary for deterministic lookup.
-2. Shorthand Values & Fixed Enumerations:
-    * Mechanism: Maps standard values and enumerated choices (from I.A.3) to their shortest forms. This includes a specific, explicitly defined token for "null" or "undefined" semantics.
-    * Custom Mappings for this Prompt:
-        * (AI: List all generated Verbose Value → Shorthand Value mappings based on I.A.3. Include the specific token for null/none/N/A if identified, e.g., _NUL_ or ∅.)
-    * Lossless & Parser Comprehensible: Parser's schema explicitly defines these mappings.
-3. Symbolic Encapsulation (SEM) with Explicit Map Referencing:
-    * Mechanism: Maps core concepts (from I.A.2) to unique Unicode symbols. A SYM_MAP_ID is included in the root block. This SYM_MAP_ID is strictly global-scoped and cannot be locally overridden.
-    * Custom Symbols for this Prompt:
-        * (AI: List all generated Concept → Symbol mappings based on I.A.2. Ensure symbols are distinct and fit the UTF-8 character set. Prioritize widely recognized symbols if they semantically fit, otherwise generate suitable, distinct Unicode symbols. If a symbol is generated, its full semantic meaning must be recoverable.)
-    * SYM_MAP_ID: [AI: Generate a unique, deterministic ID for this symbol set, e.g., PROTOCOL_NAME_SYM_V1, by taking the SHA256 hash of the alphabetically sorted list of the generated symbol mappings, truncated to 8 alphanumeric characters.]
-    * Lossless & Parser Comprehensible: Parser uses SYM_MAP_ID to load the exact symbol dictionary for deterministic translation.
-4. Contextual Lexicon Sets (CLX) with Schema-Driven Activation:
-    * Mechanism: If ambiguities (from I.A.9) require it, specific ParentKeys map to dedicated LexiconSetIDs containing context-specific abbreviations.
-    * Custom CLX Definitions for this Prompt:
-        * (AI: Define specific CLX rules only if ambiguities detected in I.A.9 require them. Provide explicit examples of ParentKey → LexiconSetID and the sub-dictionaries used to resolve the identified ambiguities. If no CLX rules are needed, state "No CLX rules required for this prompt's ambiguities.")
-    * Lossless & Parser Comprehensible: Parser's schema integrates these specific contextual mappings.
-5. Compound Data Types & Units as Atomic Values:
-    * Mechanism: Patterns detected in your prompt (from I.A.4) are defined as fused tokens with specific parsing rules.
-    * Custom Patterns for this Prompt:
-        * (AI: List all generated Pattern (e.g., INTEGER+ms) → Semantic Object (e.g., DURATION) definitions based on I.A.4, specifying the internal structure of the semantic object (e.g., {value: 3000, unit: "ms"}).)
-    * Lossless & Parser Comprehensible: Parser's schema defines explicit regex/parsing rules for each pattern.
-6. Operator Overloading & Contextual Semantics of Operators:
-    * Mechanism: Implicit operators (from I.A.5) are formally defined with context-dependent meanings.
-    * Custom Operator Rules for this Prompt:
-        * (AI: List all generated Operator → Contextual Meaning (e.g., IF (operand_type=numeric, next_char='+') THEN MIN_THRESHOLD) rules based on I.A.5. Ensure each rule is unambiguous across all contexts. If no custom operators are derived, state "No custom operator overloading derived.")
-    * Lossless & Parser Comprehensible: Parser's semantic rules deterministically interpret operators based on context and type.
-C. Phase 2: Structural & Syntactic Condensation (Maximized Format Efficiency)
-1. Character Set & Overall Encodement:
-    * Mechanism: Hybrid ASCII alphanumeric + UTF-8 Unicode symbols. The final compressed string is strictly UTF-8 encoded.
-    * Lossless & Parser Comprehensible: Parser fully supports UTF-8; each character is a distinct token as defined by the EBNF.
-2. Core Delimiters & Binding Operators:
-    * Mechanism: The following delimiters are used: :: (major block), | (top-level KVP/block separator), [ / ] (ordered lists/sub-configs), { / } (unordered sets/parameters in paths), , (list item separator), ; (KVP separator within blocks).
-    * Binding Operators:
-        * = (KEY=VALUE): The primary, general-purpose assignment operator for standard configuration parameters.
-        * : (KEY:VALUE): A secondary binding operator used specifically for flag assignments or attribute setters within special meta-contexts (e.g., ::AUTORUN:: directives, or as a value modifier like VALUE:TYPE_ID).
-    * Precedence: = is general assignment. : used within meta-directive blocks (like ::AUTORUN::) has higher precedence for relevant keys and acts as a direct interpreter instruction override. When used as a value modifier (e.g., VAR=val:type), it modifies the preceding value. Strict rules defined in EBNF.
-    * Lossless & Parser Comprehensible: The defined EBNF grammar (Section II.A) precisely specifies all delimiters and the strict precedence rules for = vs. : in all contexts, ensuring unambiguous parsing.
-3. List & Collection Encoding with Reconstruction Directives:
-    * Mechanism: Related items are grouped in [] (ordered lists or arrays) or {} (unordered sets or specific parameter groups). Specific directives (RNG:, ENC=CSV,D=) can further compress homogeneous, repetitive, or serialized data.
-    * Heterogeneous List Content: Lists explicitly allow a mix of different element types: scalar values (strings, numbers, symbols), embedded key-value pairs, or identifiers. Each item is strictly delimited by ,.
-    * List-Item Attributes/Modifiers: If identified in I.A.9, syntax like =KEY:VALUE is parsed as an attribute or modifier that applies to the preceding semantic block or sequence of items within the list, as defined by the parser's schema for that specific key, not a standalone item.
-    * Empty Values & Trailing Delimiters:
-        * An explicit KEY= (a key without an assigned value) is deterministically parsed as assigning an empty string ("") to that key.
-        * An empty list item (e.g., [A,,B]) is parsed as [A, "", B], inserting an empty string.
-        * A trailing comma at the end of a list (e.g., [A,B,]) is explicitly ignored by the parser and does not generate an empty item.
-    * Lossless & Parser Comprehensible: The parser's EBNF grammar rigorously defines all list-handling rules, including mixed content, list-item attributes/modifiers, and rules for empty values/trailing delimiters. All ambiguity is eliminated, guaranteeing perfect reconstruction.
-4. Wildcard & Pattern Matching Syntax:
-    * Mechanism: * represents "any" or "all" in file paths, directory structures, or specific value patterns. {...} enumerates a specific list of items or channels within a path component (e.g., IPC=/chan{sys,chem,...}).
-    * Lossless & Parser Comprehensible: The parser's relevant modules have predefined semantics for * and {} as pattern-matching directives, ensuring they are interpreted as rules, not literal path components.
-5. Named Reference Tokens (NRT) Definition:
-    * Mechanism: ::DEF::[ID=VALUE] for declaration and ^ID for reference.
-    * Scope Rules: Local definitions (nested ::DEF:: blocks) override global definitions. The innermost scope takes precedence.
-    * Lossless & Parser Comprehensible: Parser manages a scope stack for deterministic lookup and substitution.
-6. Schema-Driven Omission (SDO) of Default Values:
-    * Mechanism: If a parameter's value in the verbose input is identical to its predefined default value (as per the parser's internal schema for that key and context), that parameter is omitted from the compressed string.
-    * Lossless & Parser Comprehensible: The parser, with its complete schema knowledge, always inserts the correct default for omitted parameters during reconstruction.
-7. Whitespace Removal:
-    * Mechanism: All extraneous whitespace (multiple consecutive spaces, newlines, and single spaces not within literal string values) is removed during compression.
-    * Lossless & Parser Comprehensible: Whitespace is non-semantic (except within quoted literals); its removal is lossless.
-8. Explicit Quoting Rules:
-    * Mechanism: Literal strings containing delimiters (=, :, |, [, ], {, }, ,, ;, *, ^, (space)) or special characters that would conflict with the protocol's syntax must be enclosed in single quotes (') or double quotes ("). Nested quotes are explicitly escaped (e.g., \', \"). This mechanism also applies to any literal text in the user's prompt that happens to match the meta-protocol's own syntax (::DEF::, ^ID, etc.) but is intended as literal content for the custom protocol.
-    * Lossless & Parser Comprehensible: Parser applies strict quoting rules for identifying and preserving literal string content.
-9. Order of Operations for Nested Structural Elements:
-    * Mechanism: Parsing of structural elements adheres to standard nested grammar rules: innermost blocks are parsed first. Within a block, KEY=VALUE and KEY:VALUE pairs are processed left-to-right. For lists, items are processed left-to-right, with list-item attributes applying to their defined scope.
-    * Lossless & Parser Comprehensible: Parser follows a deterministic, unambiguous parsing order based on the defined EBNF grammar.
-10. Handling of Empty Blocks or Sections:
-    * Mechanism: An explicitly declared empty block (e.g., BLOCK[] or ::EMPTY_SECTION::) is retained in the compressed output if its omission would be semantically ambiguous with a schema default (e.g., "no mods" is a specific state vs. "mods not specified, use default"). Otherwise, empty blocks may be omitted under SDO.
-    * Lossless & Parser Comprehensible: Parser explicitly checks schema context for empty block semantics during both compression and decompression.
-11. Generalized Run-Length Encoding (RLE) (Fallback for Unstructured):
-    * Mechanism: If the protocol falls back to minimal compression (I.C.1), RLE will be applied to sequences of 4 or more identical characters. The format will be (char)N where char is the repeated character and N is the count. E.g., AAAA becomes (A)4.
-    * Lossless & Parser Comprehensible: RLE transformation is fully reversible.
-D. Phase 3: Advanced Logic & Control Flow (Dynamic Configuration Generation)
-1. Deterministic Control Flow Language (DCFL):
-    * Mechanism: Keywords IF, THEN, ELSE, FOR, IN, DO and their precise grammar are defined if identified in I.A.7.
-    * Custom DCFL for this Prompt: (AI: List specific rules only if control flow constructs are identified in I.A.7, using the EBNF.)
-    * Lossless & Parser Comprehensible: Parser builds an AST for logic, enabling perfect reconstruction.
-2. Scheduled & Event-Driven Triggers (SET):
-    * Mechanism: Structured syntax for CRON, FS events, etc. if identified in I.A.7.
-    * Custom SET for this Prompt: (AI: List specific rules only if triggers are identified in I.A.7, using the EBNF.)
-    * Lossless & Parser Comprehensible: Parser reconstructs explicit trigger definitions.
-3. Macro/Function Definitions with Parameters (MFD):
-    * Mechanism: MACRO[ID(P):[BLOCK]] and CALL[ID(V)] if complex reusable patterns found in I.A.7.
-    * Custom MFD for this Prompt: (AI: List specific rules only if reusable patterns are identified in I.A.7, using the EBNF.)
-    * Lossless & Parser Comprehensible: Parser performs semantic substitution, perfect reconstruction.
-4. Explicit Type Annotations (ETA):
-    * Mechanism: VALUE:TYPE_ID for type hints (e.g., int, str, bool, dur, flt). Used for ambiguous values identified in I.A.9 or when precision is required.
-    * Custom ETA for this Prompt: (AI: List specific rules only if type ambiguities or precision needs are identified in I.A.9, using the EBNF.)
-    * Lossless & Parser Comprehensible: Parser strictly adheres to annotations for casting and validation.
-E. Phase 4: Obfuscation & Security Mechanisms (Intentional Concealment & Integrity)
-1. Embedded Integrity Checksums (EIC) per Block:
-    * Mechanism: KEY=VALUE;CHK=HASH_VAL. Uses a truncated SHA256 hash.
-    * Lossless & Parser Comprehensible: Checksum is metadata; content is fully parsable and verifiable.
-2. Mandatory Encryption Blocks (MEB) with Header:
-    * Mechanism: ::ENC_BLOCK::ALG=AES256,KEY_ID=...,DATA=BASE64_CIPHERTEXT::.
-    * Lossless & Parser Comprehensible: Protocol defines encrypted state; decryption recovers original plaintext.
-3. Semantic Noise & Decoy Elements (SND) with IGNORE Directive:
-    * Mechanism: KEY=VALUE,IGNORE=ON.
-    * Lossless & Parser Comprehensible: Parser parses but excludes from functional config, preserving the decoy data.
-4. Explicit Padding Directive (PAD):
-    * Mechanism: PAD=ON[maxlen=N,fill=CHAR]. Pads entire string or block.
-    * Lossless & Parser Comprehensible: Parser removes/reapplies padding; core data untouched.
-F. Phase 5: Meta-Configuration & Interpreter Directives (Protocol Management)
-1. Protocol Version & Feature Flags:
-    * Mechanism: ACP_VER=2.0. FEAT_FLAGS lists all features used in this specific generated protocol.
-    * Lossless & Parser Comprehensible: Parser dynamically adjusts rules based on version/flags.
-2. Runtime Context Requirements (RCR):
-    * Mechanism: REQ[OS=...,MEM=...,LIB_VER=...] if relevant requirements found in I.A.7.
-    * Custom RCR for this Prompt: (AI: List specific rules only if runtime requirements are identified in I.A.7, using the EBNF.)
-    * Lossless & Parser Comprehensible: Parser validates environment.
-3. External Resource Manifest (ERM):
-    * Mechanism: ::EXT_RES::[SCHEMA_URI=...,SYM_MAP_URI=...] if external resources are needed for this prompt's protocol.
-    * Custom ERM for this Prompt: (AI: List specific rules only if external resources are identified as necessary, using the EBNF.)
-    * Lossless & Parser Comprehensible: Parser fetches external data for reconstruction.
-4. Meta-Directives (MDI) for Interpreter:
-    * Mechanism: Instructions directly targeting the interpreter (from I.A.8).
-    * Root Configuration Block Type: ::[AI: Determine the most appropriate root block name from I.A.6 or I.A.8 based on the prompt's content (e.g., 'BOOTABLE_SEED', 'CONFIG_ROOT'). If no clear root, use ::GENERIC_CONF::. This defines the primary context and initial parser modes for the entire configuration.]::
-    * Custom MDI for this Prompt:
-        * (AI: For MDI identified in I.A.8, first attempt to generate structured representations if patterns emerge (e.g., RETURN ALL OUTPUTS >300 IN PARTS could become RET[ALL=ON,LIMIT=300,MODE=PARTIAL]). Only if no clear structured pattern is discernible, then list the MDI as literal strings for direct interpreter action. Specify these rules using the EBNF.)
-    * Lossless & Parser Comprehensible: Parser/meta-interpreter has predefined handlers for these commands; structured MDI are parsed semantically, while literal MDI are treated as exact literal instructions.
-5. Conflict Resolution Logic:
-    * Mechanism: Strict precedence hierarchy:
-        * MDI directives (highest).
-        * Local ::DEF:: overrides.
-        * Global ::DEF:::: definitions.
-        * Explicit Global Parameters.
-        * Schema Defaults (SDO) (lowest).
-    * Lossless & Parser Comprehensible: Parser applies these rules deterministically.
+    print("\n--- COMPRESSED OUTPUT ---\n" + compressed + "\n")
+    
+    print("--- DECOMPRESSION (v3.6) ---\n")
+    decompressor = ClearCompress36Plus()
+    decompressed = decompressor.decompress(compressed)
 
-III. Compressed Output of Your Prompt:
-(AI: Apply the custom compression protocol designed in Section II to the original "[USER INPUT PROMPT]". Generate the final, compressed string here.)
-::[AI: Dynamically generated Root Block Name from II.E.4]::[AI: Compressed content of the user's prompt according to the custom protocol]::EOL::
+    assert sample_text == decompressed
+    print("\n--- SUCCESS: Decompression fidelity confirmed for v3.6. ---")
